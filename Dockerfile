@@ -4,6 +4,9 @@ FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu18.04
 RUN sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
 
+# https://github.com/NVIDIA/nvidia-docker/issues/1632#issuecomment-1112667716
+RUN rm /etc/apt/sources.list.d/cuda.list
+RUN rm /etc/apt/sources.list.d/nvidia-ml.list
 
 ENV DEBIAN_FRONTEND noninteractive
 # Add common tools available in apt repository. We choose not to support python2
