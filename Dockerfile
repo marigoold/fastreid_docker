@@ -14,8 +14,8 @@ RUN apt -o Acquire::http::proxy=false update && \
     apt -o Acquire::http::proxy=false install -y apt-utils software-properties-common && \
     add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
     apt update && \
-    apt -o Acquire::http::proxy=false install -y aria2 man telnet tmux locales pkg-config inetutils-ping net-tools git zsh thefuck mc sed ack-grep ranger htop silversearcher-ag python3 python3-dev build-essential autoconf automake libtool make gcc-9 g++-9 curl wget tar libevent-dev libncurses-dev clang lld ccache nasm  unzip openjdk-8-jdk colordiff mlocate iftop libpulse-dev libv4l-dev python3-venv libc
-    url4-openssl-dev libopenblas-dev gdb texinfo libreadline-dev cmake valgrind tzdata zip libstdc++-7-dev tree && \
+    apt -o Acquire::http::proxy=false install -y aria2 man telnet tmux locales pkg-config inetutils-ping net-tools git zsh thefuck mc sed ack-grep ranger htop silversearcher-ag python3.8 python3.8-dev build-essential autoconf automake libtool make gcc-9 g++-9 curl wget tar libevent-dev libncurses-dev clang lld ccache nasm  unzip openjdk-8-jdk colordiff mlocate iftop libpulse-dev libv4l-dev python3-venv libcurl4-openssl-dev \
+    libopenblas-dev gdb texinfo libreadline-dev cmake valgrind tzdata zip libstdc++-7-dev tree && \
     apt clean
 
 RUN locale-gen "en_US.UTF-8"
