@@ -65,7 +65,7 @@ RUN git clone git://github.com/cgdb/cgdb.git && cd cgdb && ./autogen.sh && ./con
 
 # RUN git config --global http.proxy xxx && git config --global https.proxy 
 
-RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage && chmod +x nvim.appimage && ./nvim.appimage --appimage-extract && chmod 755 -R squashfs-root && rm nvim.appimage && ln -s /squashfs-root/AppRun /usr/bin/nvim
+# RUN wget https://github.com/neovim/neovim/releases/download/stable/nvim.appimage && chmod +x nvim.appimage && ./nvim.appimage --appimage-extract && chmod 755 -R squashfs-root && rm nvim.appimage && ln -s /squashfs-root/AppRun /usr/bin/nvim
 
 # Install tmux
 # RUN ["/bin/bash", "-c", "TMUX_VERSION=3.0a &&       \
@@ -145,21 +145,21 @@ RUN git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions /home/d
 RUN git clone --depth 1 https://github.com/zsh-users/zsh-syntax-highlighting.git /home/dev/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 # Add nvim config to share config with vim
-RUN mkdir -p /home/dev/.config/nvim/ && \
-echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> /home/dev/.config/nvim/init.vim && \
-echo "let &packpath=&runtimepath" >> /home/dev/.config/nvim/init.vim && \
-echo "source ~/.vimrc" >> /home/dev/.config/nvim/init.vim
-# -----------
+# RUN mkdir -p /home/dev/.config/nvim/ && \
+# echo "set runtimepath^=~/.vim runtimepath+=~/.vim/after" >> /home/dev/.config/nvim/init.vim && \
+# echo "let &packpath=&runtimepath" >> /home/dev/.config/nvim/init.vim && \
+# echo "source ~/.vimrc" >> /home/dev/.config/nvim/init.vim
+# # -----------
 
-COPY --chown=dev:dev .gitconfig /home/dev/
-COPY --chown=dev:dev .vimrc /home/dev/
-COPY --chown=dev:dev .vimrc.local /home/dev/
-COPY --chown=dev:dev coc-settings.json /home/dev/.config/nvim/
-RUN mkdir -p /home/dev/.vim/autoload 
-COPY --chown=dev:dev plug.vim /home/dev/.vim/autoload/ 
-# RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-# RUN nvim +'PlugInstall --sync' +qa
-# RUN nvim +'CocInstall coc-json coc-python coc-highlight coc-snippets coc-lists coc-git coc-yank coc-java coc-clangd coc-cmake -sync' +qa
+# COPY --chown=dev:dev .gitconfig /home/dev/
+# COPY --chown=dev:dev .vimrc /home/dev/
+# COPY --chown=dev:dev .vimrc.local /home/dev/
+# COPY --chown=dev:dev coc-settings.json /home/dev/.config/nvim/
+# RUN mkdir -p /home/dev/.vim/autoload 
+# COPY --chown=dev:dev plug.vim /home/dev/.vim/autoload/ 
+# # RUN curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+# # RUN nvim +'PlugInstall --sync' +qa
+# # RUN nvim +'CocInstall coc-json coc-python coc-highlight coc-snippets coc-lists coc-git coc-yank coc-java coc-clangd coc-cmake -sync' +qa
  
 RUN git clone --depth 1 https://github.com/gpakosz/.tmux.git /home/dev/.tmux/ &&    \
 ln -s /home/dev/.tmux/.tmux.conf /home/dev/.tmux.conf
