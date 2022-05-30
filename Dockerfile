@@ -139,6 +139,7 @@ RUN sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh
 
 # Install power10k zsh theme
 RUN git clone --depth=1 https://gitee.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
+RUN echo "ZSH_THEME=\"powerlevel10k/powerlevel10k\"" >> ~/.zshrc
 
 # Install autosuggestions and syntax-highlighting
 RUN git clone --depth 1 https://github.com/zsh-users/zsh-autosuggestions /home/dev/.oh-my-zsh/custom/plugins/zsh-autosuggestions
