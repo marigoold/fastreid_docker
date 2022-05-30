@@ -1,8 +1,10 @@
-FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu18.04
+FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu20.04
 
 # Uncomment it if you are in China
-RUN sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
-RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+# RUN sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+# RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+RUN rm /etc/apt/sources.list.d/cuda.list
+RUN rm /etc/apt/sources.list.d/nvidia-ml.list
 
 # https://github.com/NVIDIA/nvidia-docker/issues/1632#issuecomment-1112667716
 RUN rm /etc/apt/sources.list.d/cuda.list
@@ -47,7 +49,7 @@ RUN wget https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-lin
 # Install cgdb
 RUN apt -o Acquire::http::proxy=false update && \
     apt -o Acquire::http::proxy=false install -y flex
-RUN git clone git://github.com/cgdb/cgdb.git && cd cgdb && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
+RUN git clone http://github.com/cgdb/cgdb.git && cd cgdb && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
 
 # RUN git clone https://github.com/MaskRay/ccls --recursive --depth=1 && \
     # mkdir ccls/build && cd ccls/build && CC=clang-8 CXX=clang++-8 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-16.04/ -GNinja .. && \
