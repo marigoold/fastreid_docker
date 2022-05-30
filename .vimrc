@@ -347,3 +347,4 @@ inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 source $HOME/.vimrc.local
 
 hi CocHighlightText guibg=none guifg=none gui=underline
+set background=light
