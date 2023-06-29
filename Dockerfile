@@ -1,28 +1,30 @@
-FROM nvidia/cuda:11.1.1-cudnn8-devel-ubuntu20.04
+# FROM nvidia/cuda:11.4.3-cudnn8-devel-ubuntu20.04
+FROM gn-images.tencentcloudcr.com/ngc/megatron-lm:onelab-dev-2306051420-63c9940-snapshot
 
 # Uncomment it if you are in China
-# RUN sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
-# RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
-RUN rm /etc/apt/sources.list.d/cuda.list
-RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+RUN sed -i 's/security.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+RUN sed -i 's/archive.ubuntu.com/mirrors.ustc.edu.cn/g' /etc/apt/sources.list
+# RUN rm /etc/apt/sources.list.d/cuda.list
+# RUN rm /etc/apt/sources.list.d/nvidia-ml.list
 
 # https://github.com/NVIDIA/nvidia-docker/issues/1632#issuecomment-1112667716
-RUN rm /etc/apt/sources.list.d/cuda.list
-RUN rm /etc/apt/sources.list.d/nvidia-ml.list
+# RUN rm /etc/apt/sources.list.d/cuda.list
+# RUN rm /etc/apt/sources.list.d/nvidia-ml.list
 
 ENV DEBIAN_FRONTEND noninteractive
+RUN apt update
 # Add common tools available in apt repository. We choose not to support python2
 RUN apt -o Acquire::http::proxy=false update && \
     apt -o Acquire::http::proxy=false install -y apt-utils software-properties-common && \
     add-apt-repository ppa:ubuntu-toolchain-r/test -y && \
     apt update && \
-    apt -o Acquire::http::proxy=false install -y aria2 man telnet tmux locales pkg-config inetutils-ping net-tools git zsh thefuck mc sed ack-grep ranger htop silversearcher-ag python3.8 python3.8-dev build-essential autoconf automake libtool make gcc-9 g++-9 curl wget tar libevent-dev libncurses-dev clang lld ccache nasm  unzip openjdk-8-jdk colordiff mlocate iftop libpulse-dev libv4l-dev python3-venv libcurl4-openssl-dev \
-    libopenblas-dev gdb texinfo libreadline-dev cmake valgrind tzdata zip libstdc++-7-dev tree && \
+    apt -o Acquire::http::proxy=false install -y aria2 man telnet tmux locales pkg-config inetutils-ping net-tools git zsh thefuck mc sed ack-grep ranger htop silversearcher-ag python3.9 python3.9-dev build-essential autoconf automake libtool make gcc-9 g++-9 curl wget tar libevent-dev libncurses-dev clang lld ccache nasm  unzip openjdk-8-jdk colordiff mlocate iftop libpulse-dev libv4l-dev python3-venv libcurl4-openssl-dev \
+    libopenblas-dev gdb texinfo libreadline-dev cmake valgrind tzdata zip libstdc++-7-dev tree sudo && \
     apt clean
 
 RUN locale-gen "en_US.UTF-8"
 
-RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
+# RUN bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
 
 # RUN ["/bin/bash", "-c", "aria2c -s16 -x16 http://releases.llvm.org/8.0.0/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
 # tar xf /clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-16.04.tar.xz && \
@@ -47,9 +49,9 @@ RUN wget https://github.com/ninja-build/ninja/releases/download/v1.9.0/ninja-lin
 	# rm get-pip.py
 
 # Install cgdb
-RUN apt -o Acquire::http::proxy=false update && \
-    apt -o Acquire::http::proxy=false install -y flex
-RUN git clone http://github.com/cgdb/cgdb.git && cd cgdb && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
+# RUN apt -o Acquire::http::proxy=false update && \
+#     apt -o Acquire::http::proxy=false install -y flex
+# RUN git clone http://github.com/cgdb/cgdb.git && cd cgdb && ./autogen.sh && ./configure --prefix=/usr/local && make && make install
 
 # RUN git clone https://github.com/MaskRay/ccls --recursive --depth=1 && \
     # mkdir ccls/build && cd ccls/build && CC=clang-8 CXX=clang++-8 cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/clang+llvm-8.0.0-x86_64-linux-gnu-ubuntu-16.04/ -GNinja .. && \
@@ -113,8 +115,8 @@ COPY install-clangformat-hook /usr/bin/
 COPY install-clangtidy-hook /usr/bin/
 
 # Install nodejs
-RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
-RUN apt-get install -y nodejs
+# RUN curl -sL https://deb.nodesource.com/setup_13.x | bash -
+# RUN apt-get install -y nodejs
 
 # Set timezone
 ENV TZ=Asia/Shanghai
@@ -122,10 +124,11 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN echo "export LC_ALL=en_US.UTF-8" >> /etc/zsh/zshenv && echo "export LANG=en_US.UTF-8" >> /etc/zsh/zshenv
 
-ARG USER_UID=1000
+ARG USER_UID=1062
 RUN echo $USER_UID
 # Add user "dev"
-RUN useradd dev -m -u ${USER_UID} && echo "dev:dev" | chpasswd && usermod -aG sudo dev
+RUN useradd dev -m -u ${USER_UID} && echo "dev:dev" | chpasswd && usermod -aG sudo dev | echo "dev ALL=(ALL:ALL) ALL" >> /etc/sudoers
+
 
 # change shell to zsh for user dev
 RUN chsh -s `which zsh` dev
@@ -134,7 +137,7 @@ USER dev
 WORKDIR /home/dev/
 
 # Install yarn
-RUN curl -o- -L https://yarnpkg.com/install.sh | bash
+# RUN curl -o- -L https://yarnpkg.com/install.sh | bash
 
 # Install oh-my-zsh
 RUN sh -c "$(wget https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
@@ -208,7 +211,7 @@ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/
 RUN conda install pip
 
 # Install cmake via pip, install pygments for gtags, pynvim for neovim
-RUN /home/dev/miniconda/bin/python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple cmake pygments pynvim thefuck pylint flake8 autopep8 mypy ipdb gpustat opencv-python cython yacs termcolor tabulate gdown matplotlib
+# RUN /home/dev/miniconda/bin/python -m pip install -i https://pypi.tuna.tsinghua.edu.cn/simple cmake pygments pynvim thefuck pylint flake8 autopep8 mypy ipdb gpustat opencv-python cython yacs termcolor tabulate gdown matplotlib
 
 # Install torch
 # COPY --chown=dev:dev torch-1.9.0+cu111-cp36-cp36m-linux_x86_64.whl /home/dev/ 
