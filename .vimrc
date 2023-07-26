@@ -107,7 +107,7 @@ Plug 'daquexian/project_manager.vim'
 """""""""""""" vim-qf
 Plug 'romainl/vim-qf'
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 nmap <silent> <leader>jd <Plug>(coc-definition)
 nmap <silent> <leader>jj <Plug>(coc-rename)
 nmap <silent> <leader>ji <Plug>(coc-implementation)

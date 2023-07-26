@@ -1,15 +1,15 @@
 export TERM=xterm-256color
-export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.local/bin:$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 export ZSH=$HOME/.oh-my-zsh
 unsetopt beep
 CASE_INSENSITIVE="true"
 HYPHEN_INSENSITIVE="true"
 DISABLE_AUTO_UPDATE="true"
-export EDITOR=nvim
-export VISUAL=nvim
-export SUDO_EDITOR=nvim
+# export EDITOR=nvim
+# export VISUAL=nvim
+# export SUDO_EDITOR=nvim
 
-ZSH_THEME="robbyrussell"
+ZSH_THEME="powerlevel10k/powerlevel10k"
 source $ZSH/oh-my-zsh.sh
 
 plugins=(
@@ -31,7 +31,7 @@ bindkey "${terminfo[kend]}" end-of-line
 bindkey '^[[Z' reverse-menu-complete
 bindkey "^?" backward-delete-char
 
-alias vim=nvim
+# alias vim=nvim
 alias top=htop
 eval $(thefuck --alias)
 alias fk=fuck
